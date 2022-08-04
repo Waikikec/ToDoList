@@ -6,6 +6,7 @@ type Props = {};
 type Task = {
   id: string;
   label: string;
+  isCompleted: boolean;
 };
 
 const ListScreen: React.FC<Props> = () => {
@@ -18,18 +19,41 @@ const ListScreen: React.FC<Props> = () => {
 
   const handleNewTaskKeyPress = (e: KeyboardEvent<HTMLInputElement>) => {
     if (e.key === 'Enter' && newTaskLabel !== '') {
-      setTasks((tasks) => [...tasks, { id: nanoid(), label: newTaskLabel }]);
+      setTasks((tasks) => [
+        ...tasks,
+        { id: nanoid(), label: newTaskLabel, isCompleted: false },
+      ]);
       setNewTaskLabel('');
     }
   };
 
+  //Higher Order Functions - simple returns another function
+  const handleCompleteChange =
+    (handledTask: Task) => (e: ChangeEvent<HTMLInputElement>) => {
+      setTasks((tasks) =>
+        tasks.map((task) => {
+          if (task.id === handledTask.id) {
+            return { ...task, isCompleted: e.target.checked };
+          }
+          return task;
+        })
+      );
+    };
+
   return (
     <div>
-      <ul>
+      <div>
         {tasks.map((task) => (
-          <li key={task.id}>{task.label}</li>
+          <div key={task.id}>
+            <input
+              type="checkbox"
+              checked={task.isCompleted}
+              onChange={handleCompleteChange(task)}
+            />
+            {task.label}
+          </div>
         ))}
-      </ul>
+      </div>
       <input
         value={newTaskLabel}
         onChange={handleNewTaskLabelChange}
