@@ -4,7 +4,11 @@ import { Task, TasksProps } from '../types';
 
 type Props = TasksProps & {};
 
-const ListScreen: React.FC<Props> = ({ tasks, setTasks }) => {
+const ListScreen: React.FC<Props> = ({
+  tasks,
+  setTasks,
+  updateTaskCompletion,
+}) => {
   const [newTaskLabel, setNewTaskLabel] = useState('');
 
   const handleNewTaskLabelChange = (e: ChangeEvent<HTMLInputElement>) => {
@@ -23,15 +27,8 @@ const ListScreen: React.FC<Props> = ({ tasks, setTasks }) => {
 
   //Higher Order Functions - simple returns another function
   const handleTaskCompleteChange =
-    (handledTask: Task) => (e: ChangeEvent<HTMLInputElement>) => {
-      setTasks((tasks) =>
-        tasks.map((task) => {
-          if (task.id === handledTask.id) {
-            return { ...task, isCompleted: e.target.checked };
-          }
-          return task;
-        })
-      );
+    (task: Task) => (e: ChangeEvent<HTMLInputElement>) => {
+      updateTaskCompletion(task.id, e.target.checked);
     };
 
   const handleClearClick = () => {
@@ -63,7 +60,7 @@ const ListScreen: React.FC<Props> = ({ tasks, setTasks }) => {
         onKeyPress={handleNewTaskKeyPress}
       />
       <div>
-        <button onClick={handleClearClick}>Clear Tasks</button>
+        <button onClick={handleClearClick}>Clear Completed</button>
       </div>
     </div>
   );
