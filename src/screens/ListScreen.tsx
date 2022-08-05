@@ -28,7 +28,7 @@ const ListScreen: React.FC<Props> = () => {
   };
 
   //Higher Order Functions - simple returns another function
-  const handleCompleteChange =
+  const handleTaskCompleteChange =
     (handledTask: Task) => (e: ChangeEvent<HTMLInputElement>) => {
       setTasks((tasks) =>
         tasks.map((task) => {
@@ -44,6 +44,10 @@ const ListScreen: React.FC<Props> = () => {
     setTasks((tasks) => tasks.filter((task) => !task.isCompleted));
   };
 
+  const handleTaskDeleteClick = (handledTask: Task) => () => {
+    setTasks((tasks) => tasks.filter((task) => task.id !== handledTask.id));
+  };
+
   return (
     <div>
       <div>
@@ -52,9 +56,10 @@ const ListScreen: React.FC<Props> = () => {
             <input
               type="checkbox"
               checked={task.isCompleted}
-              onChange={handleCompleteChange(task)}
+              onChange={handleTaskCompleteChange(task)}
             />
             {task.label}
+            <button onClick={handleTaskDeleteClick(task)}>delete</button>
           </div>
         ))}
       </div>
