@@ -103,6 +103,7 @@ const ListScreen: React.FC<Props> = () => {
         onChange={handleNewTaskLabelChange}
         onKeyPress={handleNewTaskKeyPress}
       />
+      <Spacer height={45} />
       <TextButton onClick={handleClearClick} style={{ alignSelf: 'center' }}>
         Clear Completed
       </TextButton>
